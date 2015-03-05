@@ -14,16 +14,6 @@ object UtilBuild extends Build {
     "-Ywarn-unused"
   )
 
-  val depsSettings: Seq[Def.Setting[_]] = Seq(
-    resolvers ++= Seq(
-      Resolver.sonatypeRepo("releases"),
-      Resolver.typesafeRepo("releases")
-    ),
-    libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-core" % V.Specs2 % "test"
-    )
-  )
-
   val publishSettings: Seq[Def.Setting[_]] = Seq(
     licenses := Seq("MIT" -> url("http://www.opensource.org/licenses/MIT")),
     publishTo <<= version.apply { v =>
