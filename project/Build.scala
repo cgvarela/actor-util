@@ -57,7 +57,10 @@ object UtilBuild extends Build {
       "-unchecked",
       "-feature",
       "-language:higherKinds"
-    ) ++ compilerWarnings
+    ) ++ compilerWarnings,
+    resolvers ++= Seq(
+      Resolver.bintrayRepo("scalaz", "releases")
+    )
   ) ++ publishSettings
 
   lazy val actorUtil = Project(
