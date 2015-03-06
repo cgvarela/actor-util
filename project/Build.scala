@@ -4,7 +4,7 @@ import sbt._
 object UtilBuild extends Build {
   object V {
     val Akka = "2.3.9"
-    val Specs2 = "2.4.15"
+    val Specs2 = "3.0"
   }
 
   lazy val compilerWarnings = Seq(

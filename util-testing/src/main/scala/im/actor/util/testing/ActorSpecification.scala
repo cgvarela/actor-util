@@ -6,8 +6,6 @@ import com.typesafe.config._
 import java.net.InetAddress
 import org.specs2.execute.Success
 import org.specs2.SpecificationLike
-import org.specs2.time.NoTimeConversions
-import org.specs2.specification.{ Step, Fragments }
 
 object ActorSpecification {
   def createSystem(systemName: String = "actor-server-test"): ActorSystem = {
@@ -32,15 +30,6 @@ object ActorSpecification {
 
 abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.createSystem() }) extends TestKit(system)
     with SpecificationLike
-    with NoTimeConversions
     with ImplicitSender {
   implicit def anyToSuccess[T](a: T): org.specs2.execute.Result = Success()
-
-  protected def beforeAll = {}
-
-  protected def afterAll = {
-    system.shutdown()
-  }
-
-  override def map(fs: => Fragments) = Step(beforeAll) ^ fs ^ Step(afterAll)
 }
