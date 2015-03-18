@@ -1,10 +1,13 @@
 package im.actor.util.testing
 
+import java.net.InetAddress
+
 import akka.actor._
 import akka.testkit._
 import com.typesafe.config._
-import java.net.InetAddress
 import org.specs2.execute.Success
+import org.specs2.specification.Step
+import org.specs2.specification.core.Fragments
 import org.specs2.SpecificationLike
 
 object ActorSpecification {
@@ -40,8 +43,14 @@ object ActorSpecification {
   }
 }
 
-abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.createSystem() }) extends TestKit(system)
-    with SpecificationLike
-    with ImplicitSender {
+abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.createSystem() })
+    extends TestKit(system) with SpecificationLike {
   implicit def anyToSuccess[T](a: T): org.specs2.execute.Result = Success()
+
+  def after = system.shutdown()
+
+  override def map(fragments: => Fragments) =
+    fragments ^ step(shutdownSystem())
+
+  private def shutdownSystem(): Unit = system.shutdown()
 }
