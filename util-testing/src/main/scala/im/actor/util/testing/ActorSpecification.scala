@@ -52,5 +52,5 @@ abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.cre
   override def map(fragments: => Fragments) =
     fragments ^ step(shutdownSystem())
 
-  private def shutdownSystem(): Unit = system.shutdown()
+  private def shutdownSystem(): Unit = TestKit.shutdownActorSystem(system)
 }
