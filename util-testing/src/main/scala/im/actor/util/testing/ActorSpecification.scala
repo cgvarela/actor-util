@@ -5,6 +5,7 @@ import java.net.InetAddress
 import akka.actor._
 import akka.testkit._
 import com.typesafe.config._
+import org.scalatest.{Suite, BeforeAndAfterAll}
 import org.specs2.execute.Success
 import org.specs2.specification.Step
 import org.specs2.specification.core.Fragments
@@ -47,10 +48,14 @@ abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.cre
     extends TestKit(system) with SpecificationLike {
   implicit def anyToSuccess[T](a: T): org.specs2.execute.Result = Success()
 
-  def after = system.shutdown()
-
   override def map(fragments: => Fragments) =
     fragments ^ step(shutdownSystem())
 
   private def shutdownSystem(): Unit = TestKit.shutdownActorSystem(system)
+}
+
+abstract class ActorSuite(system: ActorSystem = { ActorSpecification.createSystem() }) extends TestKit(system) with Suite with BeforeAndAfterAll {
+  override def afterAll(): Unit = {
+    TestKit.shutdownActorSystem(system)
+  }
 }
