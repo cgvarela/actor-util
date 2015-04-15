@@ -5,11 +5,11 @@ import java.net.InetAddress
 import akka.actor._
 import akka.testkit._
 import com.typesafe.config._
-import org.scalatest.{Suite, BeforeAndAfterAll}
-import org.specs2.execute.Success
-import org.specs2.specification.Step
-import org.specs2.specification.core.Fragments
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.{ FlatSpecLike, BeforeAndAfterAll, Matchers, Suite }
 import org.specs2.SpecificationLike
+import org.specs2.execute.Success
+import org.specs2.specification.core.Fragments
 
 object ActorSpecification {
   private[this] def defaultSystemName = "actor-server-test"
@@ -35,7 +35,7 @@ object ActorSpecification {
 
     initialConfig
       .withFallback(
-        ConfigFactory.parseString(s"""
+        ConfigFactory.parseString( s"""
           akka.remote.netty.tcp.port = $port
           akka.remote.netty.tcp.hostname = "$host"
           akka.cluster.seed-nodes = [ "akka.tcp://$systemName@$host:$port" ]
@@ -44,8 +44,8 @@ object ActorSpecification {
   }
 }
 
-abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.createSystem() })
-    extends TestKit(system) with SpecificationLike {
+abstract class ActorSpecification(system: ActorSystem = {ActorSpecification.createSystem()})
+  extends TestKit(system) with SpecificationLike {
   implicit def anyToSuccess[T](a: T): org.specs2.execute.Result = Success()
 
   override def map(fragments: => Fragments) =
@@ -54,8 +54,16 @@ abstract class ActorSpecification(system: ActorSystem = { ActorSpecification.cre
   private def shutdownSystem(): Unit = TestKit.shutdownActorSystem(system)
 }
 
-abstract class ActorSuite(system: ActorSystem = { ActorSpecification.createSystem() }) extends TestKit(system) with Suite with BeforeAndAfterAll {
+abstract class ActorSuite(system: ActorSystem = {ActorSpecification.createSystem()})
+  extends TestKit(system)
+  with Suite
+  with FlatSpecLike
+  with BeforeAndAfterAll
+  with Matchers
+  with ScalaFutures {
   override def afterAll(): Unit = {
     TestKit.shutdownActorSystem(system)
   }
 }
+
+abstract class ActorFlatSuite(system: ActorSystem = {ActorSpecification.createSystem()}) extends ActorSuite(system)
