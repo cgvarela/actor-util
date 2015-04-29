@@ -15,7 +15,6 @@ object UtilBuild extends Build {
   )
 
   val publishSettings: Seq[Def.Setting[_]] = Seq(
-    licenses := Seq("MIT" -> url("http://www.opensource.org/licenses/MIT")),
     publishTo <<= version.apply { v =>
       val nexus = "https://oss.sonatype.org/"
       if (v.trim.endsWith("SNAPSHOT"))
