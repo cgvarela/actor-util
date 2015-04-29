@@ -3,8 +3,7 @@ import sbt._
 
 object UtilBuild extends Build {
   object V {
-    val Akka = "2.3.9"
-    val Specs2 = "3.0"
+    val Akka = "2.3.10"
     val Scalatest = "2.2.4"
   }
 
@@ -79,7 +78,6 @@ object UtilBuild extends Build {
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % V.Akka,
       "com.typesafe.akka" %% "akka-testkit" % V.Akka,
-      "org.specs2" %% "specs2-core" % V.Specs2,
       "org.scalatest" %% "scalatest" % V.Scalatest
     )
   )
