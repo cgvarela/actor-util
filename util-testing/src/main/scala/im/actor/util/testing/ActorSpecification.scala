@@ -37,7 +37,7 @@ object ActorSpecification {
           akka.remote.netty.tcp.hostname = "$host"
           akka.cluster.seed-nodes = [ "akka.tcp://$systemName@$host:$port" ]
         """))
-      .withFallback(ConfigFactory.load().getConfig("actor-server"))
+      .withFallback(ConfigFactory.load())
   }
 }
 
